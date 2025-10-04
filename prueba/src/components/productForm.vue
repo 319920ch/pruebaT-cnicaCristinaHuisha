@@ -6,7 +6,7 @@
         <input v-model="form.title" class="input" placeholder="Título" />
         <input v-model="form.category" class="input" placeholder="Categoría" />
         <textarea v-model="form.description" class="input" rows="4" placeholder="Descripción"></textarea>
-        <input v-model.number="form.price" type="number" class="input" placeholder="Precio" />
+        <input v-model.number="form.price" type="number" step="0.01" min="0" class="input" placeholder="Precio" />
         <input v-model.number="form.stock" type="number" class="input" placeholder="Stock" />
         <div style="display:flex; gap:8px; justify-content:flex-end;">
           <button class="btn secondary" type="button" @click="$emit('cancel')">Cancelar</button>

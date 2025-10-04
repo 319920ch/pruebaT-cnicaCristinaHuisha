@@ -107,7 +107,31 @@ async createProduct(productData) {
     console.error('Error creando producto:', err)
     throw err
   }
+},
+async updateProduct(id, productData) {
+  const auth = useAuthStore()
+  const token = auth.token
+
+  try {
+    const res = await apiFetch(`/products/${id}`, {
+      method: 'PUT',
+      token,
+      body: productData,
+    })
+
+    // Actualizar localmente el producto en el array items
+    const index = this.items.findIndex(p => p.id === res.id)
+    if (index !== -1) {
+      this.items[index] = res
+    }
+
+    return res
+  } catch (err) {
+    console.error('Error actualizando producto:', err)
+    throw err
+  }
 }
+
 
   }
 })

@@ -48,6 +48,7 @@ const router = useRouter()
 const store = useProductsStore()
 const product = ref(null)
 
+// Carga del producto
 const load = async () => {
   try {
     const id = route.params.id
@@ -58,7 +59,14 @@ const load = async () => {
   }
 }
 
-onMounted(load)
+// OnMounted con soporte a datos actualizados desde el formulario
+onMounted(() => {
+  if (history.state?.updatedProduct) {
+    product.value = history.state.updatedProduct
+  } else {
+    load()
+  }
+})
 
 const setMain = (img) => {
   product.value.thumbnail = img
@@ -66,14 +74,11 @@ const setMain = (img) => {
 
 const goEdit = () => router.push(`/productos/${route.params.id}/editar`)
 
-
 const goBack = () => {
   const page = route.query.page || 1
   router.push(`/productos?page=${page}`)
 }
 
-
-// Ir al inicio (página 1)
 const goHome = () => {
   router.push(`/productos?page=1`)
 }

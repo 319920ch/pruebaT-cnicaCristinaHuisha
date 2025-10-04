@@ -38,9 +38,13 @@ onMounted(async () => {
 const handleSubmit = async (payload) => {
   try {
     if (isEdit.value) {
-      await store.updateProduct(route.params.id, payload)
+      const updated = await store.updateProduct(route.params.id, payload)
       alert('Producto actualizado')
-      router.push(`/productos/${route.params.id}`)
+      router.push({
+        path: `/productos/${route.params.id}`,
+        state: { updatedProduct: updated }
+})
+
     } else {
       const created = await store.createProduct(payload)
       alert('Producto creado: ID ' + (created.id || ''))
