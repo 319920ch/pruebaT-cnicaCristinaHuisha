@@ -73,15 +73,15 @@ const goNew = () => router.push('/productos/nuevo')
 const confirmDelete = (id) => { idToDelete.value = id; showConfirm.value = true }
 
 const deleteProductConfirmed = async () => {
-  try {
-    await store.deleteProduct(idToDelete.value)
+ try {
+   await store.deleteProduct(idToDelete.value)
     showConfirm.value = false
-    await store.fetchProducts(store.page)
-    alert('Producto eliminado')
+   //alert('Producto eliminado')
   } catch (err) {
     alert('Error al eliminar: ' + (err.message || ''))
   }
-}
+  }
+
 
 // Header
 const goHome = () => router.push('/productos')

@@ -36,6 +36,7 @@
             <button class="btn secondary" @click="$emit('view', p.id)">Ver</button>
             <button class="btn secondary" @click="$emit('edit', p.id)">Editar</button>
             <button class="btn" @click="$emit('delete', p.id)">Eliminar</button>
+
           </td>
         </tr>
       </tbody>
@@ -60,6 +61,13 @@ const props = defineProps({
   totalPages: { type: Number, default: 1 }
 })
 const emit = defineEmits(['view','edit','delete','create','page'])
+
+const confirmDelete = (id) => {
+  if (confirm('¿Seguro que deseas eliminar este producto?')) {
+    emit('delete', id)
+  }
+}
+
 
 const search = ref('')
 const filtered = computed(() => {

@@ -56,21 +56,27 @@ export const useProductsStore = defineStore('products', {
     },
 
     async deleteProduct(id) {
-      const auth = useAuthStore()
-      const token = auth.token
+  const auth = useAuthStore()
+  const token = auth.token
 
-      try {
-        await apiFetch(`/products/${id}`, {
-          method: 'DELETE',
-          token
-        })
-        // opcional: recargar productos después de eliminar
-        await this.fetchProducts(this.page)
-      } catch (err) {
-        console.error('Error al eliminar producto:', err)
-        throw err
-      }
-    },
+  try {
+    await apiFetch(`/products/${id}`, {
+      method: 'DELETE',
+      token
+    })
+
+    // Quitar el producto del array local
+    this.items = this.items.filter(p => p.id !== id)
+
+    // Actualizar total y totalPages
+    this.total = Math.max(0, this.total - 1)
+    this.totalPages = Math.ceil(this.total / this.limit)
+
+  } catch (err) {
+    console.error('Error al eliminar producto:', err)
+    throw err
+  }
+},
 async createProduct(productData) {
   const auth = useAuthStore()
   const token = auth.token
