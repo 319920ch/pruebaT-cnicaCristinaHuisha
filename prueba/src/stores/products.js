@@ -5,86 +5,48 @@ import { useAuthStore } from './auth'
 export const useProductsStore = defineStore('products', {
   state: () => ({
     items: [],
-    total: 0,
-    limit: 10,
-    page: 1,
     loading: false,
-    error: null,
-    current: null
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 1,
   }),
   actions: {
     async fetchProducts(page = 1) {
+      const auth = useAuthStore()
+      this.page = page
       this.loading = true
-      this.error = null
       try {
-        this.page = page
-        const skip = (page - 1) * this.limit
-        const auth = useAuthStore()
-        const token = auth.token
-        const data = await apiFetch(`/products?limit=${this.limit}&skip=${skip}`, { token })
-        this.items = data.products || []
-        this.total = data.total || 0
+        const res = await apiFetch(`/products?limit=${this.limit}&skip=${(page-1)*this.limit}`, {
+          headers: {
+            'Authorization': `Bearer ${auth.token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        this.items = res.products || []
+        this.total = res.total || 0
+        this.totalPages = Math.ceil(this.total / this.limit)
       } catch (err) {
-        this.error = err.message || 'Error cargando productos'
+        console.error('Error al cargar productos:', err)
+        this.items = []
       } finally {
         this.loading = false
       }
     },
-    async fetchProductById(id) {
-      this.loading = true
-      this.error = null
-      try {
-        const auth = useAuthStore()
-        const data = await apiFetch(`/products/${id}`, { token: auth.token })
-        this.current = data
-        return data
-      } catch (err) {
-        this.error = err.message
-        throw err
-      } finally {
-        this.loading = false
-      }
-    },
-    async createProduct(payload) {
-      this.loading = true
-      try {
-        const auth = useAuthStore()
-        const data = await apiFetch('/products/add', { method: 'POST', body: payload, token: auth.token })
-        return data
-      } catch (err) {
-        throw err
-      } finally {
-        this.loading = false
-      }
-    },
-    async updateProduct(id, payload) {
-      this.loading = true
-      try {
-        const auth = useAuthStore()
-        const data = await apiFetch(`/products/${id}`, { method: 'PUT', body: payload, token: auth.token })
-        return data
-      } catch (err) {
-        throw err
-      } finally {
-        this.loading = false
-      }
-    },
+
     async deleteProduct(id) {
-      this.loading = true
+      const auth = useAuthStore()
       try {
-        const auth = useAuthStore()
-        const data = await apiFetch(`/products/${id}`, { method: 'DELETE', token: auth.token })
-        return data
+        await apiFetch(`/products/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${auth.token}`,
+            'Content-Type': 'application/json'
+          }
+        })
       } catch (err) {
         throw err
-      } finally {
-        this.loading = false
       }
-    }
-  },
-  getters: {
-    totalPages(state) {
-      return Math.ceil(state.total / state.limit) || 1
     }
   }
 })

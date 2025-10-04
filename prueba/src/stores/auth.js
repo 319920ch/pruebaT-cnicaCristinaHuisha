@@ -19,7 +19,8 @@ export const useAuthStore = defineStore('auth', {
           method: 'POST',
           body: { username, password }
         })
-         this.token = data.accessToken
+        this.token = data.accessToken
+        localStorage.setItem('token', data.accessToken)
         this.user = { firstName: data.firstName || username, ...data }
       } catch (err) {
         this.error = 'Usuario y/o contraseña incorrectos. Revise los datos ingresados'
@@ -34,4 +35,3 @@ export const useAuthStore = defineStore('auth', {
     }
   }
 })
-

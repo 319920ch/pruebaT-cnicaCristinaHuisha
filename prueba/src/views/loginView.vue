@@ -15,12 +15,12 @@
     <!-- Mensaje de error -->
     <p v-if="error" class="error-msg">{{ error }}</p>
 
-    <!-- Loader mientras verifica datos -->
+    <!-- Loading -->
     <Loader :show="loading">
       <p class="loader-msg">Estamos comprobando tus datos...</p>
     </Loader>
 
-    <!-- Modal de bienvenida -->
+    <!-- Modal bienvenida -->
     <div v-if="showWelcome" class="modal-backdrop">
       <div class="modal card">
         <h3>¡Hola, {{ authStore.user.firstName }}!</h3>
@@ -51,13 +51,13 @@ const submit = async () => {
   try {
     await authStore.login(username.value, password.value)
 
-    // Mostrar modal de bienvenida
+    // Mostrar  bienvenida
     showWelcome.value = true
 
-    // Redirigir a Productos después de 2 segundos
+    // Redirigir a Productos  2 segundos
     setTimeout(() => {
       showWelcome.value = false
-      router.replace('/productos')
+      router.push('/productos')
     }, 2000)
     
   } catch (err) {
