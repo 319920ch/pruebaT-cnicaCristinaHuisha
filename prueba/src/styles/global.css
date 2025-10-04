@@ -1,0 +1,17 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, Arial, sans-serif; }
+body { background:#f8fafc; color:#111827; }
+.container { max-width:1100px; margin: 20px auto; }
+.card { background: #fff; border-radius: 8px; padding:16px; box-shadow: 0 4px 12px rgba(16,24,40,0.06); }
+.table { width:100%; border-collapse: collapse; }
+.table th, .table td { padding:8px 10px; text-align:left; border-bottom:1px solid #eee; }
+.table img { width:64px; height:64px; object-fit:cover; border-radius:6px; }
+.controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+.btn { background:#0b74de; color:white; border:0; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.btn.secondary { background:#e6eefc; color:#0b74de; }
+.input { padding:8px 10px; border-radius:6px; border:1px solid #d1d5db; }
+.badge { display:inline-block; padding:4px 8px; border-radius:999px; background:#e6f7ed; color:#0b7a3a; font-size:12px; }
+.grid { display:grid; grid-template-columns: 1fr 320px; gap:16px; }
+@media (max-width: 800px) {
+  .grid { grid-template-columns: 1fr; }
+  .table img { width:48px; height:48px; }
+}
