@@ -70,6 +70,38 @@ export const useProductsStore = defineStore('products', {
         console.error('Error al eliminar producto:', err)
         throw err
       }
-    }
+    },
+async createProduct(productData) {
+  const auth = useAuthStore()
+  const token = auth.token
+
+  try {
+    console.log('Enviando producto:', productData)
+
+    const res = await apiFetch('/products/add', {
+      method: 'POST',
+      token,
+      body: productData,
+    })
+
+    console.log('Producto creado en servidor:', res)
+
+    //  items es un array
+    if (!Array.isArray(this.items)) this.items = []
+
+    // Insertar el producto al inicio de la lista
+    this.items.unshift(res)
+
+    // Actualizar total y totalPages
+    this.total += 1
+    this.totalPages = Math.ceil(this.total / this.limit)
+
+    return res
+  } catch (err) {
+    console.error('Error creando producto:', err)
+    throw err
+  }
+}
+
   }
 })

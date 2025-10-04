@@ -60,7 +60,7 @@ onMounted(() => {
   store.fetchProducts(page)
 })
 const changePage = (p) => {
-  store.changePage(p) // Esto actualiza store.page y store.lastPage
+  store.changePage(p) 
 }
 
 // Funciones CRUD

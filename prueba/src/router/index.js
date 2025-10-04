@@ -3,13 +3,14 @@ import LoginView from '../views/LoginView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
 import ProductFormView from '../views/ProductFormView.vue'
 import ProductsView from '../views/ProductsView.vue'
+import ProductsNewView from '../views/ProductNewView.vue'
 
 // Definición de rutas
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: LoginView },
   { path: '/productos', component: ProductsView, meta: { requiresAuth: true } },
-  { path: '/productos/nuevo', component: ProductFormView, meta: { requiresAuth: true } },
+  { path: '/productos/nuevo', component: ProductsNewView, meta: { requiresAuth: true } },
   { path: '/productos/:id', component: ProductDetailView, meta: { requiresAuth: true } },
   { path: '/productos/:id/editar', component: ProductFormView, meta: { requiresAuth: true } }
 ]
