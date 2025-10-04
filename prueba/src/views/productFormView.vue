@@ -51,4 +51,6 @@ const handleSubmit = async (payload) => {
     alert('Error guardando producto: ' + (err.message || ''))
   }
 }
+
+
 </script>

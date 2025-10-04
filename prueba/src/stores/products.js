@@ -9,7 +9,8 @@ export const useProductsStore = defineStore('products', {
     page: 1,
     limit: 10,
     total: 0,
-    totalPages: 1
+    totalPages: 1,
+    lastPage: 1
   }),
 
   actions: {
@@ -17,12 +18,13 @@ export const useProductsStore = defineStore('products', {
       const auth = useAuthStore()
       const token = auth.token
       this.page = page
+      this.lastPage = page
       this.loading = true
 
       try {
         const res = await apiFetch(
           `/products?limit=${this.limit}&skip=${(page - 1) * this.limit}`,
-          { token } 
+          { token }
         )
         this.items = res.products || []
         this.total = res.total || 0
@@ -35,6 +37,24 @@ export const useProductsStore = defineStore('products', {
       }
     },
 
+    async fetchProductById(id) {
+      const auth = useAuthStore()
+      const token = auth.token
+      try {
+        const res = await apiFetch(`/products/${id}`, { token })
+        return res
+      } catch (err) {
+        console.error('Error al cargar producto:', err)
+        throw err
+      }
+    },
+
+    changePage(p) {
+      this.page = p
+      this.lastPage = p
+      this.fetchProducts(p)
+    },
+
     async deleteProduct(id) {
       const auth = useAuthStore()
       const token = auth.token
@@ -42,8 +62,10 @@ export const useProductsStore = defineStore('products', {
       try {
         await apiFetch(`/products/${id}`, {
           method: 'DELETE',
-          token 
+          token
         })
+        // opcional: recargar productos después de eliminar
+        await this.fetchProducts(this.page)
       } catch (err) {
         console.error('Error al eliminar producto:', err)
         throw err

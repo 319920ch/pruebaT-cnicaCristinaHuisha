@@ -34,7 +34,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import ConfirmModal from '../components/confirmModal.vue'
 import Loader from '../components/loader.vue'
 import ProductTable from '../components/productTable.vue'
@@ -44,24 +44,31 @@ import { useProductsStore } from '../stores/products'
 const store = useProductsStore()
 const auth = useAuthStore()
 const router = useRouter()
+const route = useRoute()
 
 const showConfirm = ref(false)
 const idToDelete = ref(null)
 
 // Computed para mostrar el header dinámico
 const user = computed(() => auth.user)
-console.log('DEBUG AUTH STORE:', auth)
 console.log('token:', auth.token)
 console.log('user:', auth.user)
 
-// Cargar productos
-onMounted(() => store.fetchProducts(1))
+// Cargar productos según la query 'page'
+onMounted(() => {
+  const page = parseInt(route.query.page) || 1
+  store.fetchProducts(page)
+})
+const changePage = (p) => {
+  store.changePage(p) // Esto actualiza store.page y store.lastPage
+}
 
 // Funciones CRUD
-const viewProduct = (id) => router.push(`/productos/${id}`)
+const viewProduct = (id) => {
+  router.push({ path: `/productos/${id}`, query: { page: store.page } })
+}
 const editProduct = (id) => router.push(`/productos/${id}/editar`)
 const goNew = () => router.push('/productos/nuevo')
-const changePage = (p) => store.fetchProducts(p)
 
 const confirmDelete = (id) => { idToDelete.value = id; showConfirm.value = true }
 
@@ -82,6 +89,7 @@ const logout = () => {
   auth.logout()
   router.push('/login')
 }
+
 </script>
 
 <style scoped>
