@@ -46,7 +46,7 @@ const logout = () => {
   padding:12px 20px; background:#0b74de; color:white;
 }
 .logo { cursor:pointer; margin:0; font-size:18px; }
-.container { padding:20px; min-height:70vh; }
+.container { padding:20px; min-height:80vh; }
 .footer { text-align:center; padding:12px; color:#666; background:#f5f5f5; }
 .btn { background:#fff; color:#0b74de; border:0; padding:6px 10px; border-radius:6px; cursor:pointer; }
 .user-area { display:flex; gap:10px; align-items:center; }
