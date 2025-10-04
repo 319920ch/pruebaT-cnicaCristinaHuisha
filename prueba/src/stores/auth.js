@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 import { apiFetch } from '../services/api'
 
 export const useAuthStore = defineStore('auth', {
-  id: 'auth',
+  
   state: () => ({
-    token: null,
-    user: null,
+    token: localStorage.getItem('token') || null,
+    user: JSON.parse(localStorage.getItem('user') || 'null'),
     loading: false,
     error: null
   }),

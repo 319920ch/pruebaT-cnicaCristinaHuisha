@@ -50,6 +50,9 @@ const idToDelete = ref(null)
 
 // Computed para mostrar el header dinámico
 const user = computed(() => auth.user)
+console.log('DEBUG AUTH STORE:', auth)
+console.log('token:', auth.token)
+console.log('user:', auth.user)
 
 // Cargar productos
 onMounted(() => store.fetchProducts(1))
